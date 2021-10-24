@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap');
+
 *,
 *::before,
 *::after {
@@ -11,6 +13,7 @@ html {
 }
 
 body {
+  font-family: 'Ubuntu', sans-serif;
   box-sizing: border-box;
   font-size: 1.6rem;
 }
@@ -21,7 +24,8 @@ body {
 
 #header {
   padding: 3rem;
-  font-size: 4rem;
+  font-size: 5rem;
+  font-weight: 700;
   text-align: center;
 }
 
@@ -32,12 +36,16 @@ body {
   width: 350px;
   height: 350px;
   cursor: pointer;
-  border: 1px solid black;
+  border: 3px solid black;
 }
 
 .cell {
-  border: 1px solid black;
+  border: 3px solid black;
   box-sizing: border-box;
+  text-align: center;
+  font-size: 8rem;
+  font-weight: 700;
+  padding-top: .7rem;
 }
 
 #game-status {

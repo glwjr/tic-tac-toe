@@ -41,7 +41,6 @@ const displayController = (() => {
     })
 
     const cells = document.querySelectorAll(".cell");
-
     cells.forEach((cell) => {
         cell.addEventListener("click", () => {
             gameController.playRound(cell.dataset.index);

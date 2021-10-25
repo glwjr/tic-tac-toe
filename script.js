@@ -1,5 +1,4 @@
 const Player = (sign) => {
-    this.sign = sign
 
     const getSign = () => {
         return sign
@@ -12,6 +11,10 @@ const gameBoard = (() => {
     let board = ["", "", "", "", "", "", "", "", ""];
 
     const setField = (index, sign) => {
+        if(board[index] !== "") {
+            return
+        }
+
         board[index] = sign;
     }
 
@@ -44,18 +47,53 @@ const displayController = (() => {
         gameStatus.innerHTML = `Player ${sign}'s turn`
     }
 
-    return { setGameMessage }
+    const setWinningMessage = (sign) => {
+        gameStatus.innerHTML = `Player ${sign} wins!`
+    }
+
+    const setTieMessage = () => {
+        gameStatus.innerHTML = "It's a tie! Game over."
+    }
+
+    const reset = () => {
+        cells.forEach((cell) => {
+            cell.innerHTML = "";
+        })
+    }
+
+    return { setGameMessage, setWinningMessage, setTieMessage, reset }
+
 })();
 
 const gameController = (() => {
     let playerX = Player("X");
     let playerO = Player("O");
-    let isOver = false;
+    let playerWins = false;
     let round = 1;
 
     const playRound = (cellIndex) => {
-        gameBoard.setField(cellIndex, getCurrentPlayerSign());
+        if(gameBoard.getField(cellIndex) !== "") {
+            return
+        }
+
+        if(playerWins == false && round < 10) {
+            gameBoard.setField(cellIndex, getCurrentPlayerSign());
+        }
+
+        checkWinner();
+
+        if(playerWins == true) {
+            displayController.setWinningMessage(getCurrentPlayerSign());
+            return
+        }
+
+        if(playerWins == false && round == 9) {
+            displayController.setTieMessage();
+            return
+        }
+
         round++
+
         displayController.setGameMessage(getCurrentPlayerSign());
     }
 
@@ -63,19 +101,33 @@ const gameController = (() => {
         return (round % 2 == 1 ? playerX.getSign() : playerO.getSign())
     }
 
-    //const checkIfWinner = () => {
-    //    const winConditions = [
-    //        [0,1,2],
-    //        [3,4,5],
-    //        [6,7,8],
-    //        [0,3,6],
-    //        [1,4,7],
-    //        [2,5,8],
-    //        [0,1,2],
-    //        [3,4,5],
-    //        [6,7,8]
-    //    ]
-    //}
+    const checkWinner = () => {
+        const winConditions = [
+            [0,1,2],
+            [3,4,5],
+            [6,7,8],
+            [0,3,6],
+            [1,4,7],
+            [2,5,8],
+            [0,4,8],
+            [2,4,6]
+        ]
+
+        winConditions.forEach(function(row) {
+            let a = row[0], b = row[1], c = row[2];
+            if (gameBoard.getField(a) !== "" && 
+                gameBoard.getField(a) == gameBoard.getField(b) && 
+                gameBoard.getField(b) == gameBoard.getField(c)) {
+                playerWins = true;
+            }
+        })
+    }
+
+    const reset = () => {
+        gameBoard.reset();
+        displayController.reset();
+    }
     
-    return { playRound }
+    return { playRound, reset }
+    
 })();

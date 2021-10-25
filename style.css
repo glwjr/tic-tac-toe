@@ -30,17 +30,16 @@ body {
 
 #container {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
   margin: auto;
-  width: 350px;
-  height: 350px;
+  width: 360px;
+  height: 360px;
   cursor: pointer;
   border: 3px solid black;
 }
 
 .cell {
   border: 3px solid black;
-  box-sizing: border-box;
   text-align: center;
   font-size: 8rem;
   font-weight: 700;

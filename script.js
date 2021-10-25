@@ -1,7 +1,7 @@
 const Player = (sign) => {
     this.sign = sign
 
-    const getSign = (sign) => {
+    const getSign = () => {
         return sign
     }
 
@@ -9,7 +9,7 @@ const Player = (sign) => {
 }
 
 const gameBoard = (() => {
-    let board = ["X", "O", "X", "O", "X", "O", "X", "O", "X"];
+    let board = ["", "", "", "", "", "", "", "", ""];
 
     const setField = (index, sign) => {
         board[index] = sign;
@@ -33,15 +33,18 @@ const displayController = (() => {
     const gameStatus = document.getElementById("game-status");
     const cells = document.querySelectorAll(".cell");
 
-    //cells.forEach((cell) => {
-    //    cell.addEventListener("click", () => {
-    //        console.log(cell.dataset.index)
-    //    })
-    //})
-
     cells.forEach((cell) => {
-        cell.innerHTML = gameBoard.getField(cell.dataset.index);
+        cell.addEventListener("click", () => {
+            gameController.playRound(cell.dataset.index);
+            cell.innerHTML = gameBoard.getField(cell.dataset.index);
+        })
     })
+
+    const setGameMessage = (sign) => {
+        gameStatus.innerHTML = `Player ${sign}'s turn`
+    }
+
+    return { setGameMessage }
 })();
 
 const gameController = (() => {
@@ -50,13 +53,29 @@ const gameController = (() => {
     let isOver = false;
     let round = 1;
 
-    const playRound = () => {
+    const playRound = (cellIndex) => {
+        gameBoard.setField(cellIndex, getCurrentPlayerSign());
         round++
+        displayController.setGameMessage(getCurrentPlayerSign());
     }
 
     const getCurrentPlayerSign = () => {
-        return (round % 3 == 1 ? playerX.getSign() : playerO.getSign())
+        return (round % 2 == 1 ? playerX.getSign() : playerO.getSign())
     }
+
+    //const checkIfWinner = () => {
+    //    const winConditions = [
+    //        [0,1,2],
+    //        [3,4,5],
+    //        [6,7,8],
+    //        [0,3,6],
+    //        [1,4,7],
+    //        [2,5,8],
+    //        [0,1,2],
+    //        [3,4,5],
+    //        [6,7,8]
+    //    ]
+    //}
     
-    return { getCurrentPlayerSign }
+    return { playRound }
 })();

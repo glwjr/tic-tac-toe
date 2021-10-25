@@ -63,3 +63,9 @@ body {
   text-align: center;
   font-size: 1.5rem;
 }
+
+@media screen and (max-width: 480px) {
+  #game-status {
+    font-size: 2rem;
+  }
+}

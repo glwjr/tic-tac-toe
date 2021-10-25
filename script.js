@@ -34,6 +34,12 @@ const gameBoard = (() => {
 
 const displayController = (() => {
     const gameStatus = document.getElementById("game-status");
+
+    const resetButton = document.getElementById("reset-button");
+    resetButton.addEventListener("click", () => {
+        reset();
+    })
+
     const cells = document.querySelectorAll(".cell");
 
     cells.forEach((cell) => {
@@ -59,9 +65,13 @@ const displayController = (() => {
         cells.forEach((cell) => {
             cell.innerHTML = "";
         })
+
+        gameStatus.innerHTML = "Click a spot to begin. Player X's turn."
+        gameController.reset();
+        gameBoard.reset();
     }
 
-    return { setGameMessage, setWinningMessage, setTieMessage, reset }
+    return { setGameMessage, setWinningMessage, setTieMessage }
 
 })();
 
@@ -124,8 +134,8 @@ const gameController = (() => {
     }
 
     const reset = () => {
-        gameBoard.reset();
-        displayController.reset();
+        playerWins = false;
+        round = 1;
     }
     
     return { playRound, reset }

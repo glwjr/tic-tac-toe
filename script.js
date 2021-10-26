@@ -29,20 +29,23 @@ const gameBoard = (() => {
     }
 
     return { setField, getField, reset }
-
 })();
 
 const displayController = (() => {
     const gameStatus = document.getElementById("game-status");
-
     const resetButton = document.getElementById("reset-button");
+    const cells = document.querySelectorAll(".cell");
+
     resetButton.addEventListener("click", () => {
         reset();
     })
 
-    const cells = document.querySelectorAll(".cell");
     cells.forEach((cell) => {
         cell.addEventListener("click", () => {
+            if(cell.innerHTML !== "") {
+                return
+            }
+
             gameController.playRound(cell.dataset.index);
             cell.innerHTML = gameBoard.getField(cell.dataset.index);
         })
@@ -71,7 +74,6 @@ const displayController = (() => {
     }
 
     return { setGameMessage, setWinningMessage, setTieMessage }
-
 })();
 
 const gameController = (() => {
@@ -81,28 +83,19 @@ const gameController = (() => {
     let round = 1;
 
     const playRound = (cellIndex) => {
-        if(gameBoard.getField(cellIndex) !== "") {
-            return
-        }
-
-        if(playerWins == false && round < 10) {
-            gameBoard.setField(cellIndex, getCurrentPlayerSign());
-        }
-
+        gameBoard.setField(cellIndex, getCurrentPlayerSign());
         checkWinner();
 
         if(playerWins == true) {
             displayController.setWinningMessage(getCurrentPlayerSign());
             return
         }
-
         if(playerWins == false && round == 9) {
             displayController.setTieMessage();
             return
         }
 
         round++
-
         displayController.setGameMessage(getCurrentPlayerSign());
     }
 
@@ -138,5 +131,4 @@ const gameController = (() => {
     }
     
     return { playRound, reset }
-    
 })();

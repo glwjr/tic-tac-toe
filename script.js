@@ -83,15 +83,18 @@ const gameController = (() => {
     let round = 1;
 
     const playRound = (cellIndex) => {
-        gameBoard.setField(cellIndex, getCurrentPlayerSign());
-        checkWinner();
+        if(playerWins == false && round !==9) {
+            gameBoard.setField(cellIndex, getCurrentPlayerSign());
+            checkWinner();
+        }
+
+        if(playerWins == false && round == 9) {
+            displayController.setTieMessage();
+            return
+        }
 
         if(playerWins == true) {
             displayController.setWinningMessage(getCurrentPlayerSign());
-            return
-        }
-        if(playerWins == false && round == 9) {
-            displayController.setTieMessage();
             return
         }
 
